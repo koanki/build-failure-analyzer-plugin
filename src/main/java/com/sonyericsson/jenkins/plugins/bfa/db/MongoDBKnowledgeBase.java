@@ -741,7 +741,8 @@ public class MongoDBKnowledgeBase extends KnowledgeBase {
 
             if (password != null && Util.fixEmpty(password.getPlainText()) != null) {
                 char[] pwd = password.getPlainText().toCharArray();
-                MongoCredential credential = MongoCredential.createCredential(userName, dbName, pwd);
+                MongoCredential credential = MongoCredential.createPlainCredential(userName, dbName, pwd);
+                //MongoCredential credential = MongoCredential.createCredential(userName, dbName, pwd);
                 builder.credential(credential);
             }
             mongo = MongoClients.create(builder.build());
