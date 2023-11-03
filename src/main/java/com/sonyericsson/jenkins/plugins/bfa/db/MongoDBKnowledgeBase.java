@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.DBRef;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
@@ -675,8 +674,11 @@ public class MongoDBKnowledgeBase extends KnowledgeBase {
             for (FailureCauseStatistics failureCauseStatistics : failureCauseStatisticsList) {
                 DBObject failureCauseStatisticsObject = new BasicDBObject();
                 ObjectId id = new ObjectId(failureCauseStatistics.getId());
-                DBRef failureCauseRef = new DBRef(dbName, COLLECTION_NAME, id);
-                failureCauseStatisticsObject.put("failureCause", failureCauseRef);
+                DBObject failureCauseObject = new BasicDBObject();
+                failureCauseObject.put("ref", COLLECTION_NAME);
+                failureCauseObject.put("id", id);
+                failureCauseObject.put("db", dbName);
+                failureCauseStatisticsObject.put("failureCause", failureCauseObject);
                 List<FoundIndication> foundIndicationList = failureCauseStatistics.getIndications();
                 addIndicationsToDBObject(failureCauseStatisticsObject, foundIndicationList);
                 failureCauseStatisticsObjects.add(failureCauseStatisticsObject);
